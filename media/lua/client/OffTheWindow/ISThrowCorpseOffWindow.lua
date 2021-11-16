@@ -30,18 +30,14 @@ function ISThrowCorpseOffWindow:perform()
 
 	if self.character:getSquare():isOutside() then
 		square = getWindowInsideSquare(self.window)
-		print('DEBUG: INSIDE SQUARE!')
 	else
 		square = getWindowOutsideSquare(self.window)
-		print('DEBUG: OUTSIDE SQUARE!')
 	end
 
 	self.character:setPrimaryHandItem(nil)
 	self.character:setSecondaryHandItem(nil)
 	self.character:getInventory():Remove(self.corpse)
 	local floor = getWindowFloorSquare(square)
-	print('SQUARE: ' .. square:getX() .. ' ' .. square:getY() .. ' ' .. square:getZ())
-	print('FLOOR: ' .. floor:getX() .. ' ' .. floor:getY() .. ' ' .. floor:getZ())
 	floor:AddWorldInventoryItem(self.corpse, 0.0, 0.0, 0.0)
 end
 
