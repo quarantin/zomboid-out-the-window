@@ -11,25 +11,25 @@ function OffTheWindowMenu.OnFillWorldObjectContextMenu(playerId, context, worldo
 
 		if instanceof(window, 'IsoWindow') then
 
-			local player = getSpecificPlayer(playerId)
-			local inventory = player:getInventory()
-			local corpses = inventory:getAllEvalRecurse(function(item, player)
-				return item:getType() == 'CorpseMale' or item:getType() == 'CorspeFemale'
-			end, ArrayList.new())
+			if window:IsOpen() and not window:isBarricaded() then
+				local player = getSpecificPlayer(playerId)
+				local inventory = player:getInventory()
+				local corpses = inventory:getAllEvalRecurse(function(item, player)
+					return item:getType() == 'CorpseMale' or item:getType() == 'CorspeFemale'
+				end, ArrayList.new())
 
-			if corpses:size() <= 0 then
+				if corpses:size() <= 0 then
+					return
+				end
+
+				context:addOption(getText('ContextMenu_ThrowCorpseOffWindow'), worldobjects, OffTheWindowMenu.onThrowCorpseOffWindow, player, window, corpses:get(0))
 				return
 			end
-
-			context:addOption(getText('ContextMenu_ThrowCorpseOffWindow'), worldobjects, OffTheWindowMenu.onThrowCorpseOffWindow, player, window, corpses:get(0))
-			return
 		end
 	end
 end
 
 function OffTheWindowMenu.onThrowCorpseOffWindow(worldobjects, player, window, corpse)
-	print('DEBUG: Throwing corpse off window! ' .. tostring(player))
-	print('DEBUG: Throwing corpse off window! ' .. tostring(window))
 	if luautils.walkAdj(player, window:getSquare(), false) then
 		local primary = true
 		local twoHands = true
