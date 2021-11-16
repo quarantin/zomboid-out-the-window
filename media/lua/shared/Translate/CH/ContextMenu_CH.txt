@@ -1,0 +1,3 @@
+ContextMenu_CH = {
+	ContextMenu_ThrowCorpseOffWindow = "Throw Corpse Off Window"
+}
