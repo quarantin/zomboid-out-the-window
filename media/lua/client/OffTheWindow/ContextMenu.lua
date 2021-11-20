@@ -19,16 +19,21 @@ function onFillWorldObjectContextMenu(playerId, context, worldobjects, test)
 				return
 			end
 
-		elseif instanceof(window, 'IsoThumpable') and not window:isDoor() and window:canClimbThrough(player) then
+		elseif instanceof(window, 'IsoThumpable') and not window:isDoor() then
 
-			if window:isWindow() and not window:getSquare():getWindow(window:getNorth()) then
+			--if window:isWindow() and window:canClimbThrough(player) and not window:getSquare():getWindow(window:getNorth()) then
+			if window:isWindow() and window:canClimbThrough(player) then
 				context:addOption(getText('ContextMenu_ThrowCorpseOffWindow'), worldobjects, onThrowCorpseOffWindow, player, window, corpses:get(0))
 				return
 
-			elseif window:isHoppable() then
-				context:addOption(getText('ContextMenu_ThrowCorpseOverLedge'), worldobjects, onThrowCorpseOffWindow, player, window, corpses:get(0))
+			elseif window:isHoppable() and window:canClimbOver(player) then
+				context:addOption(getText('ContextMenu_ThrowCorpseOverFence'), worldobjects, onThrowCorpseOffWindow, player, window, corpses:get(0))
+				return
 			end
 
+		elseif instanceof(window, 'IsoObject') and window:isHoppable() then
+			context:addOption(getText('ContextMenu_ThrowCorpseOverLedge'), worldobjects, onThrowCorpseOffWindow, player, window, corpses:get(0))
+			return
 		end
 	end
 end
