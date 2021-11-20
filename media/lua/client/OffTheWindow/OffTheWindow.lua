@@ -18,7 +18,7 @@ function getDropSquare(player, window)
 	x = dropSquare:getX()
 	y = dropSquare:getY()
 
-	for z = dropSquare:getZ() - 1, 0, -1 do
+	for z = dropSquare:getZ(), 0, -1 do
 		floorSquare = getSquare(x, y, z)
 		if floorSquare:isSolidFloor() then
 			return floorSquare
