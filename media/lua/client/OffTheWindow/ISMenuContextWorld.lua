@@ -1,41 +1,44 @@
-require 'luautils'
-require 'ISUI/ISWorldObjectContextMenu'
-require 'TimedActions/ISTimedActionQueue'
-require 'OffTheWindow/ISThrowCorpseOffWindow'
+function onFillWorldObjectContextMenu(playerId, context, worldobjects, test)
 
-OffTheWindowMenu = {}
+	local player = getSpecificPlayer(playerId)
+	local inventory = player:getInventory()
+	local corpses = inventory:getAllEvalRecurse(function(item, player)
+		return item:getType() == 'CorpseMale' or item:getType() == 'CorspeFemale'
+	end, ArrayList.new())
 
-function OffTheWindowMenu.OnFillWorldObjectContextMenu(playerId, context, worldobjects, test)
+	if corpses:size() <= 0 then
+		return
+	end
 
 	for _, window in ipairs(worldobjects) do
 
 		if instanceof(window, 'IsoWindow') then
 
-			if window:IsOpen() and not window:isBarricaded() then
-				local player = getSpecificPlayer(playerId)
-				local inventory = player:getInventory()
-				local corpses = inventory:getAllEvalRecurse(function(item, player)
-					return item:getType() == 'CorpseMale' or item:getType() == 'CorspeFemale'
-				end, ArrayList.new())
-
-				if corpses:size() <= 0 then
-					return
-				end
-
-				context:addOption(getText('ContextMenu_ThrowCorpseOffWindow'), worldobjects, OffTheWindowMenu.onThrowCorpseOffWindow, player, window, corpses:get(0))
+			if (window:IsOpen() or window:isSmashed()) and not window:isBarricaded() then
+				context:addOption(getText('ContextMenu_ThrowCorpseOffWindow'), worldobjects, onThrowCorpseOffWindow, player, window, corpses:get(0))
 				return
 			end
+
+		elseif instanceof(window, 'IsoThumpable') and not window:isDoor() and window:canClimbThrough(player) then
+
+			if window:isWindow() and not window:getSquare():getWindow(window:getNorth()) then
+				context:addOption(getText('ContextMenu_ThrowCorpseOffWindow'), worldobjects, onThrowCorpseOffWindow, player, window, corpses:get(0))
+				return
+
+			elseif window:isHoppable() then
+				context:addOption(getText('ContextMenu_ThrowCorpseOverLedge'), worldobjects, onThrowCorpseOffWindow, player, window, corpses:get(0))
+			end
+
 		end
 	end
 end
 
-function OffTheWindowMenu.onThrowCorpseOffWindow(worldobjects, player, window, corpse)
+function onThrowCorpseOffWindow(worldobjects, player, window, corpse)
 	if luautils.walkAdj(player, window:getSquare(), false) then
-		local primary = true
-		local twoHands = true
+		local primary, twoHands = true, true
 		ISWorldObjectContextMenu.equip(player, player:getPrimaryHandItem(), corpse, primary, twoHands)
 		ISTimedActionQueue.add(ISThrowCorpseOffWindow:new(player, window, corpse, 100))
 	end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(OffTheWindowMenu.OnFillWorldObjectContextMenu)
+Events.OnFillWorldObjectContextMenu.Add(onFillWorldObjectContextMenu)
