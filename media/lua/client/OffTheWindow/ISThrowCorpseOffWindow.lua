@@ -1,6 +1,3 @@
-require 'TimedActions/ISBaseTimedAction'
-require 'OffTheWindow/OffTheWindow'
-
 ISThrowCorpseOffWindow = ISBaseTimedAction:derive('ISThrowCorpseOffWindow')
 
 function ISThrowCorpseOffWindow:isValid()
@@ -26,19 +23,13 @@ function ISThrowCorpseOffWindow:stop()
 end
 
 function ISThrowCorpseOffWindow:perform()
-	local square = nil
-
-	if self.character:getSquare():isOutside() then
-		square = getWindowInsideSquare(self.window)
-	else
-		square = getWindowOutsideSquare(self.window)
-	end
 
 	self.character:setPrimaryHandItem(nil)
 	self.character:setSecondaryHandItem(nil)
 	self.character:getInventory():Remove(self.corpse)
-	local floor = getWindowFloorSquare(square)
-	floor:AddWorldInventoryItem(self.corpse, 0.0, 0.0, 0.0)
+
+	local dropSquare = getDropSquare(self.character, self.window)
+	dropSquare:AddWorldInventoryItem(self.corpse, 0.0, 0.0, 0.0)
 end
 
 function ISThrowCorpseOffWindow:new(character, window, corpse, time)
