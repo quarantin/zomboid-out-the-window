@@ -1,4 +1,1 @@
-Handle wall ledges
-Handle IsoThumpable fences
-Check z coordinate for getDropSquare() in for loop
-Add translation item ContextMenu_ThrowCorpseOverFence
+Handle window frames
