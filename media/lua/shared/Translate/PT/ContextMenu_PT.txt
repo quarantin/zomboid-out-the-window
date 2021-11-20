@@ -1,3 +1,4 @@
 ContextMenu_PT = {
 	ContextMenu_ThrowCorpseOffWindow = "Throw Corpse Off Window"
+	ContextMenu_ThrowCorpseOverLedge= "Throw Corpse Over Ledge"
 }
