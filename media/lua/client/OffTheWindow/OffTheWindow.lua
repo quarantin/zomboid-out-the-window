@@ -1,13 +1,21 @@
+function getNorth(window)
+	return window.getNorth and window:getNorth() or window:isNorthHoppable()
+end
+
+function getOppositeSquare(window, x, y, z)
+	return getNorth(window) and getSquare(x, y - 1, z) or getSquare(x - 1, y, z)
+end
+
 function getDropSquare(player, window)
 
-	local dropSquare, floorSquare
+	local dropSquare, floorSquare, oppositeSquare
+
 	local playerSquare = player:getSquare()
 	local windowSquare = window:getSquare()
-	local oppositeSquare = window:getOppositeSquare()
-
 	local x, y, z = windowSquare:getX(), windowSquare:getY(), windowSquare:getZ()
+	local oppositeSquare = getOppositeSquare(window, x, y, z)
 
-	if window:getNorth() then
+	if getNorth(window) then
 		dropSquare = getSquare(x, y + 1, z)
 	else
 		dropSquare = getSquare(x + 1, y, z)
