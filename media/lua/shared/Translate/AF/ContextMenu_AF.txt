@@ -1,4 +1,5 @@
 ContextMenu_AF = {
 	ContextMenu_ThrowCorpseOffWindow = "Throw Corpse Off Window"
-	ContextMenu_ThrowCorpseOverLedge= "Throw Corpse Over Ledge"
+	ContextMenu_ThrowCorpseOverFence = "Throw Corpse Over Fence"
+	ContextMenu_ThrowCorpseOverLedge = "Throw Corpse Over Ledge"
 }
