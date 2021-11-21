@@ -1,0 +1,64 @@
+local function doThrowCorpseContext(player, context, worldobjects, corpses, ...)
+    if player == nil then return end
+
+    local contextLabel = "ContextMenu_ThrowCorpse"
+    local foundObject = false
+    local squares = {...}
+
+    for _,square in ipairs(squares) do
+        if square == nil then return end
+        local worldObjects = square:getObjects()
+        for i = 0, worldObjects:size() -1 do
+            local object = worldObjects:get(i)
+            if instanceof(object, "IsoWindow") then
+                if (object:IsOpen() or object:isSmashed()) and not object:isBarricaded() then
+                    contextLabel = contextLabel.."OffWindow"
+                    foundObject = object
+                    break
+                end
+            elseif instanceof(object, "IsoThumpable") then
+                if object:isWindow() and object:canClimbThrough(player) then
+                    contextLabel = contextLabel.."OffWindow"
+                    foundObject = object
+                    break
+                elseif object:isHoppable() and object:canClimbOver(player) then
+                    contextLabel = contextLabel.."OverFence"
+                    foundObject = object
+                    break
+                end
+            elseif instanceof(object, "IsoObject") and object:isHoppable() then
+                contextLabel = contextLabel.."OverLedge"
+                foundObject = object
+                break
+            end
+        end
+    end
+
+    if not foundObject then return end
+    context:addOption(getText(contextLabel), worldobjects, onThrowCorpseOffWindow, player, foundObject, corpses:get(0))
+
+end
+
+local function onFillWorldObjectContextMenu(playerId, context, worldobjects, test)
+    local player = getSpecificPlayer(playerId)
+    local inventory = player:getInventory()
+    local corpses = inventory:getItemsFromType("CorpseMale")
+    corpses:addAll(inventory:getItemsFromType("CorpseFemale"))
+    if corpses:size() <= 0 then return end
+
+    local square = nil
+    for _,obj in ipairs(worldobjects) do
+        square = obj:getSquare()
+        if square then break end
+    end
+
+    if square == nil then return end
+
+    doThrowCorpseContext(player, context, worldobjects, corpses, square, square:getE(), square:getS())
+
+end
+
+function onThrowCorpseOffWindow(worldobjects, player, window, corpse)
+end
+
+Events.OnFillWorldObjectContextMenu.Add(onFillWorldObjectContextMenu)

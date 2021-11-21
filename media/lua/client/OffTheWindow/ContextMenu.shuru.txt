@@ -1,0 +1,59 @@
+local function getThrowOff(square, player)
+
+	if not square then return nil end
+
+    for _, window in ipairs(square:getObjects()) do
+
+        if instanceof(window, "IsoWindow") then
+
+            if (window:IsOpen() or window:isSmashed()) and not window:isBarricaded() then
+                return {window, "ThrowCorpseOffWindow"}
+            end
+
+        elseif instanceof(window, "IsoThumpable") then
+
+            if window:isWindow() and window:canClimbThrough(player) then
+                return {window, "ThrowCorpseOffWindow"}
+
+            elseif window:isHoppable() and window:canClimbOver(player) then
+                return {window, "ThrowCorpseOverFence"}
+            end
+
+        elseif instanceof(window, "IsoObject") and window:isHoppable() then
+            return {window, "ThrowCorpseOverLedge"}
+        end
+    end
+end
+
+local function onFillWorldObjectContextMenu(playerId, context, worldobjects, test)
+    local player = getSpecificPlayer(playerId)
+    local inventory = player:getInventory()
+    local corpses = inventory:getItemsFromType("CorpseMale")
+    corpses:addAll(inventory:getItemsFromType("CorpseFemale"))
+    if corpses:size() <= 0 then return end
+
+    local square = nil
+    for _,obj in ipairs(worldobjects) do
+        local sq = obj:getSquare()
+        if sq then
+            square = sq
+            break
+        end
+    end
+
+    local result = getThrowOff(square, player) or getThrowOff(square:getS(), player) or getThrowOff(square:getE(), player)
+    if result then
+        context:addOption(getText("ContextMenu_" .. result[2]), worldobjects, onThrowCorpseOffWindow, player, result[1], corpses:get(0))
+    end
+    
+end
+
+function onThrowCorpseOffWindow(worldobjects, player, window, corpse)
+       if luautils.walkAdj(player, window:getSquare(), false) then
+               local primary, twoHands = true, true
+               ISWorldObjectContextMenu.equip(player, player:getPrimaryHandItem(), corpse, primary, twoHands)
+               ISTimedActionQueue.add(ISThrowCorpseOffWindow:new(player, window, corpse, 100))
+       end
+end
+
+Events.OnFillWorldObjectContextMenu.Add(onFillWorldObjectContextMenu)
