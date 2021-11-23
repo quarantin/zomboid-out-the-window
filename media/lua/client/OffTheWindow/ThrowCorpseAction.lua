@@ -28,7 +28,7 @@ function ISThrowCorpseOffWindow:perform()
 	self.character:setSecondaryHandItem(nil)
 	self.character:getInventory():Remove(self.corpse)
 
-	local dropSquare = getDropSquare(self.character, self.window)
+	local dropSquare = OffTheWindow.getDropSquare(self.character, self.window)
 	dropSquare:AddWorldInventoryItem(self.corpse, 0.0, 0.0, 0.0)
 end
 
