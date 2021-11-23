@@ -32,7 +32,7 @@ function onFillWorldObjectContextMenu(playerId, context, worldobjects, test)
 			end
 
 		elseif instanceof(window, 'IsoObject') and window:isHoppable() then
-			context:addOption(getText('ContextMenu_ThrowCorpseOverLedge'), worldobjects, onThrowCorpseOffWindow, player, window, corpses:get(0))
+			context:addOption(getText('ContextMenu_ThrowCorpseOverFence'), worldobjects, onThrowCorpseOffWindow, player, window, corpses:get(0))
 			return
 		end
 	end
