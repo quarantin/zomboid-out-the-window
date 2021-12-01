@@ -6,9 +6,7 @@ local function getOppositeSquare(window, x, y, z)
 	return getNorth(window) and getSquare(x, y - 1, z) or getSquare(x - 1, y, z)
 end
 
-OffTheWindow = {}
-
-function OffTheWindow.getDropSquare(player, window)
+local function getDropSquare(player, window)
 
 	local dropSquare, floorSquare, oppositeSquare
 
@@ -37,3 +35,7 @@ function OffTheWindow.getDropSquare(player, window)
 
 	error('This should never happen!')
 end
+
+return {
+	getDropSquare = getDropSquare,
+}

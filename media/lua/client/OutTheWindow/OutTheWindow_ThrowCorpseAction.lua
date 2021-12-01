@@ -1,38 +1,39 @@
-ISThrowCorpseOffWindow = ISBaseTimedAction:derive('ISThrowCorpseOffWindow')
+OutTheWindow = require('OutTheWindow/OutTheWindow_Utils')
+ISThrowCorpse = ISBaseTimedAction:derive('ISThrowCorpse')
 
-function ISThrowCorpseOffWindow:isValid()
+function ISThrowCorpse:isValid()
 	return true
 end
 
-function ISThrowCorpseOffWindow:waitToStart()
+function ISThrowCorpse:waitToStart()
 	self.character:faceThisObject(self.window)
 	return self.character:shouldBeTurning()
 end
 
-function ISThrowCorpseOffWindow:update()
+function ISThrowCorpse:update()
 	self.character:faceThisObject(self.window)
 end
 
-function ISThrowCorpseOffWindow:start()
+function ISThrowCorpse:start()
 	self:setActionAnim('Loot')
 	self.character:SetVariable('LootPosition', 'Mid')
 end
 
-function ISThrowCorpseOffWindow:stop()
+function ISThrowCorpse:stop()
 	ISBaseTimedAction.stop(self);
 end
 
-function ISThrowCorpseOffWindow:perform()
+function ISThrowCorpse:perform()
 
 	self.character:setPrimaryHandItem(nil)
 	self.character:setSecondaryHandItem(nil)
 	self.character:getInventory():Remove(self.corpse)
 
-	local dropSquare = OffTheWindow.getDropSquare(self.character, self.window)
+	local dropSquare = OutTheWindow.getDropSquare(self.character, self.window)
 	dropSquare:AddWorldInventoryItem(self.corpse, 0.0, 0.0, 0.0)
 end
 
-function ISThrowCorpseOffWindow:new(character, window, corpse, time)
+function ISThrowCorpse:new(character, window, corpse, time)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self

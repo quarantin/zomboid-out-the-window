@@ -1,4 +1,4 @@
 ContextMenu_TR = {
-	ContextMenu_ThrowCorpseOffWindow = "Cesedi Pencereden aþaðýya at"
+	ContextMenu_ThrowCorpseOutTheWindow = "Cesedi Pencereden aþaðýya at"
 	ContextMenu_ThrowCorpseOverFence = "Cesedi korkuluklardan aþaðýya at"
 }

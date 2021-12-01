@@ -1,4 +1,4 @@
 ContextMenu_ES = {
-	ContextMenu_ThrowCorpseOffWindow = "Lanzar cuerpo desde la ventana"
+	ContextMenu_ThrowCorpseOutTheWindow = "Lanzar cuerpo desde la ventana"
 	ContextMenu_ThrowCorpseOverFence = "Lanzar cuerpo desde la cerca"
 }

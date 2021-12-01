@@ -1,4 +1,4 @@
 ContextMenu_RU = {
-	ContextMenu_ThrowCorpseOffWindow = "Выбросить труп из окна"
+	ContextMenu_ThrowCorpseOutTheWindow = "Выбросить труп из окна"
 	ContextMenu_ThrowCorpseOverFence = "Перебросить труп через забор"
 }
