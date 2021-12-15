@@ -29,5 +29,5 @@ description=Feedbacks are welcome! You can find me on Project Zomboid Discord se
 description=https://discord.com/invite/theindiestone
 description=
 description=Have fun! ;D
-tags=Build 41;Misc;Realistic
+tags=Build 41;Misc;Multiplayer;Realistic
 visibility=public
