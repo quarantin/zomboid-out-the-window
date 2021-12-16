@@ -1,14 +1,15 @@
-NAME           := $(shell grep ^id mod.info | cut -f2 -d=)
+MODID          := $(shell grep ^id mod.info | cut -f2 -d=)
+MODNAME        := $(shell grep ^name mod.info | cut -f2 -d=)
 VERSION        := $(shell git tag -l | tail -n 1)
 BUNDLE         := dist
-BUNDLEDIR      := $(BUNDLE)/$(NAME)
-STEAMBUNDLE    := ~/Zomboid/Workshop/$(NAME)
+BUNDLEDIR      := $(BUNDLE)/$(MODID)
+STEAMBUNDLE    := ~/Zomboid/Workshop/$(MODID)
 STEAMBUNDLEDIR := $(STEAMBUNDLE)/Contents/mods
 
 all: steambundle
 
 build:
-	transcode $(NAME) && \
+	transcode $(MODID) && \
 	rm -rf $(BUNDLE) && mkdir -p $(BUNDLEDIR)                    &&  \
 	cp -r mod.info media *.png LICENSE README.md $(BUNDLEDIR)    &&  \
 	find $(BUNDLE) -type f -iname '*.utf8.txt' -exec rm -f {} \; &&  \
@@ -17,7 +18,7 @@ build:
 		$(BUNDLEDIR)/mod.info
 
 bundle: build
-	cd $(BUNDLE) && zip -r $(NAME)-$(VERSION).zip $(NAME)
+	cd $(BUNDLE) && zip -r $(MODID)-$(VERSION).zip $(MODID)
 
 steambundle: bundle
 	rm -rf $(STEAMBUNDLE) && mkdir -p $(STEAMBUNDLEDIR) && \
