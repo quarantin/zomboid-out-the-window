@@ -29,8 +29,6 @@ steambundle: bundle
 		-e "s/^description=Latest version:.*$$/description=Latest version: $(VERSION)/" \
 		$(STEAMBUNDLE)/workshop.txt
 
-bundlesteam: bundle
-
 clean:
 	rm -rf $(BUNDLE) $(STEAMBUNDLE)
 
