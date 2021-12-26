@@ -1,4 +1,17 @@
-function onFillWorldObjectContextMenu(playerId, context, worldobjects, test)
+local OutTheWindow = {}
+
+OutTheWindow.hasFence = function(window)
+
+	local sq = window:getSquare()
+	for i = 0, sq:getObjects():size() - 1 do
+		local obj = sq:getObjects():get(i)
+		if obj:isHoppable() then
+			return obj
+		end
+	end
+end
+
+OutTheWindow.onFillWorldObjectContextMenu = function(playerId, context, worldobjects, test)
 
 	local player = getSpecificPlayer(playerId)
 	local inventory = player:getInventory()
@@ -15,30 +28,29 @@ function onFillWorldObjectContextMenu(playerId, context, worldobjects, test)
 		if instanceof(window, 'IsoWindow') then
 
 			if (window:IsOpen() or window:isSmashed()) and not window:isBarricaded() then
-				context:addOption(getText('ContextMenu_ThrowCorpseOutTheWindow'), worldobjects, onThrowCorpse, player, window, corpses:get(0))
+				context:addOption(getText('ContextMenu_ThrowCorpseOutTheWindow'), worldobjects, OutTheWindow.onThrowCorpse, player, window, corpses:get(0))
 				return
 			end
 
 		elseif instanceof(window, 'IsoThumpable') and not window:isDoor() then
 
-			--if window:isWindow() and window:canClimbThrough(player) and not window:getSquare():getWindow(window:getNorth()) then
 			if window:isWindow() and window:canClimbThrough(player) then
-				context:addOption(getText('ContextMenu_ThrowCorpseOutTheWindow'), worldobjects, onThrowCorpse, player, window, corpses:get(0))
+				context:addOption(getText('ContextMenu_ThrowCorpseOutTheWindow'), worldobjects, OutTheWindow.onThrowCorpse, player, window, corpses:get(0))
 				return
 
 			elseif window:isHoppable() and window:canClimbOver(player) then
-				context:addOption(getText('ContextMenu_ThrowCorpseOverFence'), worldobjects, onThrowCorpse, player, window, corpses:get(0))
+				context:addOption(getText('ContextMenu_ThrowCorpseOverFence'), worldobjects, OutTheWindow.onThrowCorpse, player, window, corpses:get(0))
 				return
 			end
 
-		elseif instanceof(window, 'IsoObject') and window:isHoppable() then
-			context:addOption(getText('ContextMenu_ThrowCorpseOverFence'), worldobjects, onThrowCorpse, player, window, corpses:get(0))
+		elseif instanceof(window, 'IsoObject') and (window:isHoppable() or OutTheWindow.hasFence(window)) then
+			context:addOption(getText('ContextMenu_ThrowCorpseOverFence'), worldobjects, OutTheWindow.onThrowCorpse, player, (window:isHoppable() and window or OutTheWindow.hasFence(window)), corpses:get(0))
 			return
 		end
 	end
 end
 
-function onThrowCorpse(worldobjects, player, window, corpse)
+OutTheWindow.onThrowCorpse = function(worldobjects, player, window, corpse)
 	if luautils.walkAdj(player, window:getSquare(), false) then
 		local primary, twoHands = true, true
 		ISWorldObjectContextMenu.equip(player, player:getPrimaryHandItem(), corpse, primary, twoHands)
@@ -46,4 +58,4 @@ function onThrowCorpse(worldobjects, player, window, corpse)
 	end
 end
 
-Events.OnFillWorldObjectContextMenu.Add(onFillWorldObjectContextMenu)
+Events.OnFillWorldObjectContextMenu.Add(OutTheWindow.onFillWorldObjectContextMenu)
