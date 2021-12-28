@@ -51,7 +51,7 @@ OutTheWindow.onFillWorldObjectContextMenu = function(playerId, context, worldobj
 end
 
 OutTheWindow.onThrowCorpse = function(worldobjects, player, window, corpse)
-	if luautils.walkAdj(player, window:getSquare(), false) then
+	if luautils.walkAdjWindowOrDoor(player, window:getSquare(), window) then
 		local primary, twoHands = true, true
 		ISWorldObjectContextMenu.equip(player, player:getPrimaryHandItem(), corpse, primary, twoHands)
 		ISTimedActionQueue.add(ISThrowCorpse:new(player, window, corpse, 100))
