@@ -15,7 +15,7 @@ OutTheWindow.onFillWorldObjectContextMenu = function(playerId, context, worldobj
 	local player = getSpecificPlayer(playerId)
 	local inventory = player:getInventory()
 	local corpses = inventory:getAllEvalRecurse(function(item, player)
-		return item:getType() == 'CorpseMale' or item:getType() == 'CorspeFemale'
+		return item:getType() == 'CorpseMale' or item:getType() == 'CorpseFemale'
 	end, ArrayList.new())
 
 	if corpses:size() <= 0 then
