@@ -1,4 +1,4 @@
 ContextMenu_PTBR = {
-	ContextMenu_ThrowCorpseOutTheWindow = "Throw Corpse Out The Window"
-	ContextMenu_ThrowCorpseOverFence = "Throw Corpse Over Fence"
+	ContextMenu_ThrowCorpseOutTheWindow = "Jogar corpo pela janela"
+	ContextMenu_ThrowCorpseOverFence = "Jogar corpo por cima da cerca"
 }
