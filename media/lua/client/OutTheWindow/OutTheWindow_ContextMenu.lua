@@ -1,16 +1,6 @@
-local OutTheWindow = {}
+local OutTheWindow = require('OutTheWindow/OutTheWindow')
 
-local function findHoppable(square)
-	local objects = square:getObjects()
-	for i = 0, objects:size() - 1 do
-		local object = objects:get(i)
-		if instanceof(object, 'IsoObject') and object:isHoppable() then
-			return object
-		end
-	end
-end
-
-OutTheWindow.onFillWorldObjectContextMenu = function(playerId, context, worldobjects, test)
+function OutTheWindow.OnFillWorldObjectContextMenu(playerId, context, worldobjects, test)
 
 	local player = getSpecificPlayer(playerId)
 	local inventory = player:getInventory()
@@ -49,7 +39,7 @@ OutTheWindow.onFillWorldObjectContextMenu = function(playerId, context, worldobj
 
 			elseif instanceof(window, 'IsoObject') then
 
-				local hoppable = findHoppable(window:getSquare())
+				local hoppable = OutTheWindow.findHoppable(window:getSquare())
 				if hoppable then
 					context:addOption(getText('ContextMenu_ThrowCorpseOverFence'), worldobjects, OutTheWindow.onThrowCorpse, player, hoppable, corpses:get(0))
 					return
@@ -59,12 +49,4 @@ OutTheWindow.onFillWorldObjectContextMenu = function(playerId, context, worldobj
 	end
 end
 
-OutTheWindow.onThrowCorpse = function(worldobjects, player, window, corpse)
-	if luautils.walkAdjWindowOrDoor(player, window:getSquare(), window) then
-		local primary, twoHands = true, true
-		ISWorldObjectContextMenu.equip(player, player:getPrimaryHandItem(), corpse, primary, twoHands)
-		ISTimedActionQueue.add(ISThrowCorpse:new(player, window, corpse, 100))
-	end
-end
-
-Events.OnFillWorldObjectContextMenu.Add(OutTheWindow.onFillWorldObjectContextMenu)
+Events.OnFillWorldObjectContextMenu.Add(OutTheWindow.OnFillWorldObjectContextMenu)
