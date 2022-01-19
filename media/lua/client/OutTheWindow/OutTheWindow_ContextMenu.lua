@@ -16,34 +16,10 @@ function OutTheWindow.OnFillWorldObjectContextMenu(playerId, context, worldobjec
 
 		local objects = object:getSquare():getObjects()
 		for i = 0, objects:size() - 1 do
-
-			local window = objects:get(i)
-
-			if instanceof(window, 'IsoWindow') then
-
-				if (window:IsOpen() or window:isSmashed()) and not window:isBarricaded() then
-					context:addOption(getText('ContextMenu_ThrowCorpseOutTheWindow'), worldobjects, OutTheWindow.onThrowCorpse, player, window, corpses:get(0))
-					return
-				end
-
-			elseif instanceof(window, 'IsoThumpable') and not window:isDoor() then
-
-				if window:isWindow() and window:canClimbThrough(player) then
-					context:addOption(getText('ContextMenu_ThrowCorpseOutTheWindow'), worldobjects, OutTheWindow.onThrowCorpse, player, window, corpses:get(0))
-					return
-
-				elseif window:isHoppable() and window:canClimbOver(player) then
-					context:addOption(getText('ContextMenu_ThrowCorpseOverFence'), worldobjects, OutTheWindow.onThrowCorpse, player, window, corpses:get(0))
-					return
-				end
-
-			elseif instanceof(window, 'IsoObject') then
-
-				local hoppable = OutTheWindow.findHoppable(window:getSquare())
-				if hoppable then
-					context:addOption(getText('ContextMenu_ThrowCorpseOverFence'), worldobjects, OutTheWindow.onThrowCorpse, player, hoppable, corpses:get(0))
-					return
-				end
+			local throwType, window = OutTheWindow.getThrowType(player, objects:get(i))
+			if throwType then
+				context:addOption(getText('ContextMenu_ThrowCorpse' .. throwType), worldobjects, OutTheWindow.onThrowCorpse, player, window, corpses:get(0))
+				return
 			end
 		end
 	end

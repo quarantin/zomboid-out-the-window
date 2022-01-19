@@ -1,5 +1,34 @@
 local OutTheWindow = {}
 
+OutTheWindow.throwTypeWindow = 'OutTheWindow'
+OutTheWindow.throwTypeFence = 'OverFence'
+
+function OutTheWindow.getThrowType(player, object)
+
+	if instanceof(object, 'IsoWindow') then
+
+		if (object:IsOpen() or object:isSmashed()) and not object:isBarricaded() then
+			return OutTheWindow.throwTypeWindow, object
+		end
+
+	elseif instanceof(object, 'IsoThumpable') and not object:isDoor() then
+
+		if object:isWindow() and object:canClimbThrough(player) then
+			return OutTheWindow.throwTypeWindow, object
+
+		elseif object:isHoppable() and object:canClimbOver(player) then
+			return OutTheWindow.throwTypeFence, object
+		end
+
+	elseif instanceof(object, 'IsoObject') then
+
+		local hoppable = OutTheWindow.findHoppable(object:getSquare())
+		if hoppable then
+			return OutTheWindow.throwTypeFence, hoppable
+		end
+	end
+end
+
 function OutTheWindow.findHoppable(square)
 	local objects = square:getObjects()
 	for i = 0, objects:size() - 1 do
