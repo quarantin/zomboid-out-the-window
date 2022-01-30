@@ -22,6 +22,10 @@ function OutTheWindow.getThrowType(player, object)
 
 	elseif instanceof(object, 'IsoObject') then
 
+		if IsoWindowFrame.isWindowFrame(object) and IsoWindowFrame.canClimbThrough(object, player) then
+			return OutTheWindow.throwTypeWindow, object
+		end
+
 		local hoppable = OutTheWindow.findHoppable(object:getSquare())
 		if hoppable then
 			return OutTheWindow.throwTypeFence, hoppable
