@@ -1,0 +1,4 @@
+ContextMenu_ID = {
+	ContextMenu_ThrowCorpseOutTheWindow = "Throw Corpse Out The Window"
+	ContextMenu_ThrowCorpseOverFence = "Throw Corpse Over Fence"
+}
