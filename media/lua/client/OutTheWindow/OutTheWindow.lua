@@ -3,6 +3,16 @@ local OutTheWindow = {}
 OutTheWindow.throwTypeWindow = 'OutTheWindow'
 OutTheWindow.throwTypeFence = 'OverFence'
 
+function OutTheWindow.hasWindow(square)
+	local objects = square:getObjects()
+	for i = 0, objects:size() - 1 do
+		local object = objects:get(i)
+		if instanceof(object, 'IsoWindow') then
+			return true
+		end
+	end
+end
+
 function OutTheWindow.getThrowType(player, object)
 
 	if instanceof(object, 'IsoWindow') then
@@ -22,7 +32,7 @@ function OutTheWindow.getThrowType(player, object)
 
 	elseif instanceof(object, 'IsoObject') then
 
-		if IsoWindowFrame.isWindowFrame(object) and IsoWindowFrame.canClimbThrough(object, player) then
+		if IsoWindowFrame.isWindowFrame(object) and IsoWindowFrame.canClimbThrough(object, player) and not OutTheWindow.hasWindow(object:getSquare()) then
 			return OutTheWindow.throwTypeWindow, object
 		end
 
