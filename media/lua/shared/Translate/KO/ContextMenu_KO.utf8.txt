@@ -1,4 +1,4 @@
 ContextMenu_KO = {
-	ContextMenu_ThrowCorpseOutTheWindow = "Throw Corpse Out The Window"
-	ContextMenu_ThrowCorpseOverFence = "Throw Corpse Over Fence"
+	ContextMenu_ThrowCorpseOutTheWindow = "창밖으로 시체 던지기"
+	ContextMenu_ThrowCorpseOverFence = "울타리 너머로 시체 던지기"
 }
