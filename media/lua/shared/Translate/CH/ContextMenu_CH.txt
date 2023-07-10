@@ -1,4 +1,4 @@
 ContextMenu_CH = {
-	ContextMenu_ThrowCorpseOutTheWindow = "±N«ÍÅé©ß¥Xµ¡¥~"
-	ContextMenu_ThrowCorpseOverFence = "±N«ÍÅé©ß¹L³òÄæ"
+	ContextMenu_ThrowCorpseOutTheWindow = "å°‡å±é«”æ‹‹å‡ºçª—å¤–"
+	ContextMenu_ThrowCorpseOverFence = "å°‡å±é«”æ‹‹éåœæ¬„"
 }
