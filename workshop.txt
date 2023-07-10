@@ -10,7 +10,7 @@ description=[*]Throw corpses out of windows
 description=[*]Throw corpses over fences
 description=[/list]
 description=
-description=[img]https://i.imgur.com/p7Fv1Z6.gif[/img]
+description=[url=https://ko-fi.com/quarantin][img]https://raw.githubusercontent.com/ChuckTheSheep/chuckImages/main/kofi.png[/img][/url]
 description=
 description=[h1]Version[/h1]
 description=Latest version:
